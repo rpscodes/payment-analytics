@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Response from Server</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    #chartContainer {
+      margin-top: 20px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>API Response from Server</h1>
+  <button id="callAPI">Call API</button>
+  <div id="chartContainer">
+    <canvas id="responseChart"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const callAPIButton = document.getElementById('callAPI');
+    const ctx = document.getElementById('responseChart').getContext('2d');
+
+    callAPIButton.addEventListener('click', () => {
+      fetch('http://localhost:3000/execute-command')
+        .then(response => response.text())
+        .then(data => {
+          const distribution = calculateDistribution(data);
+          updateChart(distribution);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    });
+
+    function calculateDistribution(data) {
+      const azureCount = (data.match(/azure/gi) || []).length;
+      const datacentreCount = (data.match(/datacentre/gi) || []).length;
+
+      return { azureCount, datacentreCount };
+    }
+
+    function updateChart(distribution) {
+      const { azureCount, datacentreCount } = distribution;
+
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Payment processed at Azure', 'Payment processed at Datacentre'],
+          datasets: [{
+            data: [azureCount, datacentreCount],
+            backgroundColor: ['#36a2eb', '#ff6384'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        }
+      });
+    }
+  </script>
+</body>
+</html>
