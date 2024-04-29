@@ -33,7 +33,7 @@
     const ctx = document.getElementById('responseChart').getContext('2d');
 
     callAPIButton.addEventListener('click', () => {
-      fetch('http://payment-analytics-git-aws.apps.cluster-49lcc.49lcc.sandbox2958.opentlc.com/execute-command')
+      fetch('http://localhost:3000/execute-command')
         .then(response => response.text())
         .then(data => {
           const distribution = calculateDistribution(data);

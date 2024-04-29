@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 
 // Execute the shell command
 app.get('/execute-command', (req, res) => {
-  exec('seq 100 | xargs -P 10 -n 1 -I {} curl -s "http://payment-processor.aws.svc.cluster.local:8080/api/pay"', (error, stdout, stderr) => {
+  exec('seq 100 | xargs -P 10 -n 1 -I {} curl -s "http://payment-processor-aws.apps.cluster-n8d48.n8d48.sandbox1366.opentlc.com/api/pay"', (error, stdout, stderr) => {
     if (error) {
       console.error(`Error executing command: ${error}`);
       res.status(500).send('Internal Server Error');

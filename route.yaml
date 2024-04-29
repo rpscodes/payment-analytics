@@ -1,0 +1,13 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: payment-processor
+  namespace: aws
+  labels: {}
+spec:
+  to:
+    kind: Service
+    name: payment-processor
+  tls: null
+  port:
+    targetPort: port8080
